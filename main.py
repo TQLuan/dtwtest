@@ -67,7 +67,7 @@ def k_means():
 #Interpolation
 # data for dtw-knn
 df_knn = pd.read_csv(os.getcwd() + '/labeled_dataset.csv')
-df_knn = df_knn.head()
+#df_knn = df_knn.iloc[0:400]
 train_set = df_knn.sample(frac=0.6, random_state=0, axis=0)
 test_set = df_knn[~df_knn.index.isin(train_set.index)]
 train_data = train_set.iloc[:, 0:154]
@@ -116,18 +116,19 @@ def predict(K, train_data, train_labels, test_data, test_labels, labels_name):
 
 # X = df_knn.iloc
 cm = confusion_matrix(test_labels, labels_pred)  # 由原标签和预测标签生成混淆矩阵
-plt.imshow(cm, interpolation='nearest')
-    # plt.matshow(cm, cmap=plt.cm.Blues)     # 画混淆矩阵，配色风格使用cm.Blues
+#plt.imshow(cm, interpolation='nearest')
+plt.matshow(cm, cmap=plt.cm.Blues)     # 画混淆矩阵，配色风格使用cm.Blues
 cb = plt.colorbar()  # 颜色标签
 cb.ax.tick_params(labelsize=14)  # 设置色标刻度字体大小。
-for x in range(len(cm)):
-    for y in range(len(cm)):
+for x in range(3):
+    for y in range(3):
         plt.annotate(cm[x, y], xy=(y, x), horizontalalignment='center', verticalalignment='center', fontsize=14)
-num_x = np.array(range(2))
-num_y = np.array(range(2))
-
+num_x = np.array(range(3))
+num_y = np.array(range(3))
+labels_name = [0,1,2]
+plt.xticks(num_x, labels_name, fontsize=16)  # 将标签印在x轴坐标上
+plt.yticks(num_y, labels_name, fontsize=16)
 plt.ylabel('True Area', fontsize=22)  # 坐标轴标签
 plt.xlabel('Predicted Area', fontsize=22)  # 坐标轴标签
-plt.title('LVI Confusion Matrix', fontsize=22)
-plt.ylim([-0.5, 15.5])
+plt.title('Confusion Matrix', fontsize=22)
 plt.show()
